@@ -12,10 +12,10 @@ public class Tarefa {
     public Tarefa() {
     }
 
-    public Tarefa(String descricao, boolean concluida, LocalDate dataCriacao, LocalDate dataVencimento, Prioridade prioridade, Categoria categoria) {
+    public Tarefa(String descricao, LocalDate dataVencimento, Prioridade prioridade, Categoria categoria) {
         this.descricao = descricao;
-        this.concluida = concluida;
-        this.dataCriacao = dataCriacao;
+        this.concluida = false;
+        this.dataCriacao = LocalDate.now();
         this.dataVencimento = dataVencimento;
         this.prioridade = prioridade;
         this.categoria = categoria;
