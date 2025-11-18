@@ -8,17 +8,23 @@ public class Tarefa {
     private LocalDate dataVencimento;
     private Prioridade prioridade;
     private Categoria categoria;
+    private LocalDate dataConclusao;
 
     public Tarefa() {
     }
 
-    public Tarefa(String descricao, LocalDate dataVencimento, Prioridade prioridade, Categoria categoria) {
+    public Tarefa(String descricao, Prioridade prioridade, Categoria categoria) {
         this.descricao = descricao;
         this.concluida = false;
         this.dataCriacao = LocalDate.now();
-        this.dataVencimento = dataVencimento;
+        // this.dataVencimento = dataVencimento;
         this.prioridade = prioridade;
         this.categoria = categoria;
+    }
+
+    public void marcarComoConcluida() {
+        this.concluida = true;
+        this.dataConclusao = LocalDate.now();
     }
 
     public String getDescricao() {
