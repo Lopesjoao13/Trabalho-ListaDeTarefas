@@ -12,8 +12,7 @@ public class Main {
 
 //coisas a fazer
 
-/* arrumar toString das tarefas
-*  marcar tarefa como conluida
-* arrumar filtrar por prioridade
+/*
+*  implementar marcar tarefa como conluida
 * implementar o salvar
 * */

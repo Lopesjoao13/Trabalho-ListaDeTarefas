@@ -48,7 +48,7 @@ public class PrincipalColecoes {
     }
 
     public void adicionarTarefa(String descricao, String prioridade, String categoria){
-        Tarefa tarefa = new Tarefa(descricao, Prioridade.prioridade, new Categoria(categoria,"#hhhhh"));
+        Tarefa tarefa = new Tarefa(descricao, Prioridade.valueOf(prioridade), new Categoria(categoria,"#hhhhh"));
         listaDeTarefas.add(tarefa);
         categorias.add(tarefa.getCategoria());
         tarefasPorPrioridade.get(tarefa.getPrioridade()).add(tarefa);

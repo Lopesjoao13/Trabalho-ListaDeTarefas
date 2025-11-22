@@ -86,4 +86,16 @@ public class Tarefa {
     public int hashCode() {
         return Objects.hash(descricao, concluida, dataCriacao, dataVencimento, prioridade, categoria);
     }
+
+    @Override
+    public String toString() {
+        return "Tarefa" + "\n" +
+                "descricao='" + descricao + '\'' + "\n" +
+                "concluida=" + concluida +  "\n" +
+                "dataCriacao=" + dataCriacao +  "\n" +
+                "dataVencimento=" + dataVencimento +  "\n" +
+                "prioridade=" + prioridade + "\n" +
+                "categoria=" + categoria + "\n" +
+                "dataConclusao=" + dataConclusao + "\n";
+    }
 }

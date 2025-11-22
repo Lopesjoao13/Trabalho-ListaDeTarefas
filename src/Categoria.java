@@ -2,11 +2,11 @@ import java.util.Objects;
 
 public class Categoria {
     private String nome;
-    // private String cor;
+    private String cor;
 
      public Categoria(String nome, String cor) {
          this.nome = nome;
-         // this.cor = cor;
+         this.cor = cor;
      }
 
     public Categoria() {
@@ -41,4 +41,10 @@ public class Categoria {
         return Objects.hash(nome, cor);
     }
 */
+
+    @Override
+    public String toString() {
+        return nome;
+
+    }
 }
