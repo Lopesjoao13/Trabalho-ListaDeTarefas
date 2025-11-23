@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.IOException;
 
 public class PrincipalColecoes {
 
@@ -7,7 +8,6 @@ public class PrincipalColecoes {
     private Map<Prioridade, List<Tarefa>> tarefasPorPrioridade = new HashMap<>();
 
     public PrincipalColecoes() {
-        // Inicializar o mapa com listas vazias para cada prioridade
         for (Prioridade prioridade : Prioridade.values()) {
             tarefasPorPrioridade.put(prioridade, new ArrayList<>());
         }
@@ -32,33 +32,46 @@ public class PrincipalColecoes {
                 case 1 -> {
                     System.out.println("Digite a descricao da tarefa: ");
                     String descricao = leitor.nextLine();
-                    System.out.println("Defina a prioridade como BAIXA, MÉDIA, ALTA ou URGENTE:");
-                    String prioridade = leitor.nextLine().toUpperCase();
+                    Prioridade prioridadeEscolhida = null;
+                    while (prioridadeEscolhida == null) {
+                        System.out.println("Defina a prioridade (BAIXA, MEDIA, ALTA, URGENTE):");
+                        String entradaPrioridade = leitor.nextLine().toUpperCase().trim();
+                        
+                        try {
+                            // Tenta converter. Se digitar errado, vai pular pro erro
+                            prioridadeEscolhida = Prioridade.valueOf(entradaPrioridade);
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Erro: Prioridade inválida! Digite exatamente uma das opções acima.");
+                        }
+                    }
+                    
                     System.out.println("Defina a categoria para a tarefa: ");
                     String categoria = leitor.nextLine();
-                    adicionarTarefa(descricao, prioridade, categoria);
+                    adicionarTarefa(descricao, prioridadeEscolhida, categoria);
                 }
                 case 2 -> exibirTodasTarefas();
-                case 3 -> System.out.println(); //marcarConcluida();
+                case 3 -> marcarConcluida();
                 case 4 -> exibirTarefasPorPrioridade();
-                case 5 -> System.out.println();//salvarESair();
+                case 5 -> salvarESair();
                 default -> System.out.println("Opção inválida!");
             }
         } while (opcao != 5);
     }
 
-    public void adicionarTarefa(String descricao, String prioridade, String categoria){
-        Tarefa tarefa = new Tarefa(descricao, Prioridade.valueOf(prioridade), new Categoria(categoria,"#hhhhh"));
+    public void adicionarTarefa(String descricao, Prioridade prioridade, String categoria){
+        Tarefa tarefa = new Tarefa(descricao, prioridade, new Categoria(categoria, "#FFFFFF"));
+        
         listaDeTarefas.add(tarefa);
         categorias.add(tarefa.getCategoria());
         tarefasPorPrioridade.get(tarefa.getPrioridade()).add(tarefa);
+        
+        System.out.println("Tarefa adicionada com sucesso!");
     }
 
     public void exibirTodasTarefas(){
         System.out.println("---TODAS TAREFAS---");
         listaDeTarefas.forEach(System.out::println);
     }
-
 
 
     public void exibirTarefasPorPrioridade() {
@@ -72,6 +85,51 @@ public class PrincipalColecoes {
     public void exibirCategorias() {
         System.out.println("=== CATEGORIAS ===");
         categorias.forEach(categoria -> System.out.println("• " + categoria.getNome()));
+    }
+
+    public void carregarDados() {
+        List<Tarefa> recuperadas = Persistencia.carregarTarefas();
+        for (Tarefa t : recuperadas) {
+            // Adiciona nas coleções
+            listaDeTarefas.add(t);
+            categorias.add(t.getCategoria());
+            tarefasPorPrioridade.get(t.getPrioridade()).add(t);
+        }
+        if (!recuperadas.isEmpty()) {
+            System.out.println("Dados carregados com sucesso! (" + recuperadas.size() + " tarefas)");
+        }
+    }
+
+    public void marcarConcluida() {
+        Scanner leitor = new Scanner(System.in);
+        System.out.println("--- MARCAR TAREFA COMO CONCLUÍDA ---");
+        
+        // Lista tarefas com índice para o usuário escolher
+        for (int i = 0; i < listaDeTarefas.size(); i++) {
+            Tarefa t = listaDeTarefas.get(i);
+            String status = t.isConcluida() ? "[X]" : "[ ]";
+            System.out.println(i + ". " + status + " " + t.getDescricao());
+        }
+
+        System.out.print("Digite o número da tarefa para concluir: ");
+        int index = leitor.nextInt();
+
+        if (index >= 0 && index < listaDeTarefas.size()) {
+            Tarefa t = listaDeTarefas.get(index);
+            t.marcarComoConcluida();
+            System.out.println("Tarefa '" + t.getDescricao() + "' marcada como concluída!");
+        } else {
+            System.out.println("Índice inválido.");
+        }
+    }
+
+    public void salvarESair() {
+        try {
+            Persistencia.salvarTarefas(listaDeTarefas);
+            System.out.println("Dados salvos com sucesso. Saindo...");
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar dados: " + e.getMessage());
+        }
     }
 
     public List<Tarefa> getListaDeTarefas() {

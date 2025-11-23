@@ -17,7 +17,6 @@ public class Tarefa {
         this.descricao = descricao;
         this.concluida = false;
         this.dataCriacao = LocalDate.now();
-        // this.dataVencimento = dataVencimento;
         this.prioridade = prioridade;
         this.categoria = categoria;
     }
@@ -49,6 +48,14 @@ public class Tarefa {
 
     public void setDataCriacao(LocalDate dataCriacao) {
         this.dataCriacao = dataCriacao;
+    }
+
+    public LocalDate getDataConclusao() {
+        return dataConclusao;
+    }
+
+    public void setDataConclusao(LocalDate dataConclusao) {
+        this.dataConclusao = dataConclusao;
     }
 
     public LocalDate getDataVencimento() {
@@ -89,13 +96,19 @@ public class Tarefa {
 
     @Override
     public String toString() {
-        return "Tarefa" + "\n" +
-                "descricao='" + descricao + '\'' + "\n" +
-                "concluida=" + concluida +  "\n" +
-                "dataCriacao=" + dataCriacao +  "\n" +
-                "dataVencimento=" + dataVencimento +  "\n" +
-                "prioridade=" + prioridade + "\n" +
-                "categoria=" + categoria + "\n" +
-                "dataConclusao=" + dataConclusao + "\n";
+        // Formata
+        String status = concluida ? "[X]" : "[ ]";
+        
+        // Se tiver data de conclusão, mostra ela, senão mostra a data de criação
+        String dataExibicao = concluida && dataConclusao != null 
+                ? "Concluído em: " + dataConclusao 
+                : "Criado em: " + dataCriacao;
+
+        return String.format("%s %-30s | Prioridade: %-8s | Categoria: %-10s | %s",
+                status,
+                descricao,
+                prioridade,
+                categoria.getNome(),
+                dataExibicao);
     }
 }

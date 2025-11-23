@@ -16,18 +16,18 @@ public class Categoria {
          return nome;
      }
 
-     public void setNome(String nome) {
-         this.nome = nome;
-     }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
 
-     /*public String getCor() {
-         return cor;
-     }
+    public String getCor() {
+        return cor;
+    }
 
-     public void setCor(String cor) {
-         this.cor = cor;
-     }
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -40,7 +40,7 @@ public class Categoria {
     public int hashCode() {
         return Objects.hash(nome, cor);
     }
-*/
+
 
     @Override
     public String toString() {
