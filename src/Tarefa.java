@@ -96,11 +96,9 @@ public class Tarefa {
 
     @Override
     public String toString() {
-        // Formata
         String status = concluida ? "[X]" : "[ ]";
         
-        // Se tiver data de conclusão, mostra ela, senão mostra a data de criação
-        String dataExibicao = concluida && dataConclusao != null 
+        String dataExibicao = concluida && dataConclusao != null
                 ? "Concluído em: " + dataConclusao 
                 : "Criado em: " + dataCriacao;
 

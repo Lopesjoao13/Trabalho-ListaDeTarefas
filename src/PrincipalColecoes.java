@@ -5,7 +5,8 @@ public class PrincipalColecoes {
 
     private List<Tarefa> listaDeTarefas = new ArrayList<>();
     private Set<Categoria> categorias = new HashSet<>();
-    private Map<Prioridade, List<Tarefa>> tarefasPorPrioridade = new HashMap<>();
+    //private Map<Prioridade, List<Tarefa>> tarefasPorPrioridade = new HashMap<>();
+    private Map<Prioridade, List<Tarefa>> tarefasPorPrioridade = new EnumMap<>(Prioridade.class);
 
     public PrincipalColecoes() {
         for (Prioridade prioridade : Prioridade.values()) {
@@ -19,10 +20,12 @@ public class PrincipalColecoes {
         do {
             System.out.println("---GERENCIADOR DE TAREFAS---");
             System.out.println("1. Adicionar Tarefa");
-            System.out.println("2. Listar Todas as Tarefas");
-            System.out.println("3. Marcar Tarefa Como Concluida");
-            System.out.println("4. Filtrar por Prioridade");
-            System.out.println("5. Salvar e Sair");
+            System.out.println("2. Listar Tarefas Não Concluídas");
+            System.out.println("3. Listar Tarefas Concluídas");
+            System.out.println("4. Listar Todas as Tarefas");
+            System.out.println("5. Filtrar por Prioridade");
+            System.out.println("6. Marcar Tarefa Como Concluida");
+            System.out.println("7. Salvar e Sair");
             System.out.println("Escolha uma opção: ");
 
             opcao = leitor.nextInt();
@@ -49,13 +52,15 @@ public class PrincipalColecoes {
                     String categoria = leitor.nextLine();
                     adicionarTarefa(descricao, prioridadeEscolhida, categoria);
                 }
-                case 2 -> exibirTodasTarefas();
-                case 3 -> marcarConcluida();
-                case 4 -> exibirTarefasPorPrioridade();
-                case 5 -> salvarESair();
+                case 2 -> exibirTarefasNaoConcluidas();
+                case 3 -> exibirTarefasConcluidas();
+                case 4 -> exibirTodasTarefas();
+                case 5 -> exibirTarefasPorPrioridade();
+                case 6 -> marcarConcluida();
+                case 7 -> salvarESair();
                 default -> System.out.println("Opção inválida!");
             }
-        } while (opcao != 5);
+        } while (opcao != 7);
     }
 
     public void adicionarTarefa(String descricao, Prioridade prioridade, String categoria){
@@ -142,5 +147,23 @@ public class PrincipalColecoes {
 
     public Map<Prioridade, List<Tarefa>> getTarefasPorPrioridade() {
         return tarefasPorPrioridade;
+    }
+
+
+    public void exibirTarefasConcluidas() {
+        System.out.println("--- TAREFAS CONCLUÍDAS ---");
+
+        listaDeTarefas.stream() // 1. Cria um Stream para processamento sequencial
+                .filter(Tarefa::isConcluida) // 2. Filtra, mantendo apenas tarefas onde isConcluida() retorna true
+                .forEach(System.out::println); // 3. Itera sobre o resultado e imprime cada tarefa
+    }
+
+
+    public void exibirTarefasNaoConcluidas() {
+        System.out.println("--- TAREFAS PENDENTES ---");
+
+        listaDeTarefas.stream() // 1. Inicia o fluxo de dados
+                .filter(t -> !t.isConcluida()) // 2. Filtra: mantém apenas tarefas onde isConcluida() é FALSO
+                .forEach(System.out::println); // 3. Imprime as tarefas restantes
     }
 }

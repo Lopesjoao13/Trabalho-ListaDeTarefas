@@ -1,4 +1,4 @@
 public enum Prioridade {
-    BAIXA, MEDIA, ALTA, URGENTE
+    URGENTE, ALTA, MEDIA, BAIXA
 }
 
